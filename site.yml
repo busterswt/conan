@@ -3,15 +3,17 @@
   gather_facts: no
   any_errors_fatal: true
   tasks:
+
     - name: Generate inventory and host_vars
       ansible.builtin.include_role:
-        name: configurator
+        name: generator
 
 
 - hosts: all
   gather_facts: no
   any_errors_fatal: false
   tasks:
+
     - name: Run the netplan!
       ansible.builtin.include_role:
         name: ansible-netplan
@@ -19,6 +21,10 @@
         - netplan_enabled: "{{ netplan_enabled }}"
           netplan_config_file: "{{ netplan_config_file }}"
           become: yes
+
+    - name: Configure hosts
+      ansible.builtin.include_role:
+        name: configurator
 
 
 #  roles:
