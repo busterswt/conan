@@ -1,0 +1,44 @@
+#jinja2: lstrip_blocks: "True"
+---
+netplan_configuration:
+  {% for host in hosts %}
+  network:
+    version: 2
+    renderer: networkd
+    ethernets:
+    {% for interface in interfaces %}
+      {{ interface.name }}:
+        addresses: {{ hosts[host].addresses[interface.name] | default([]) }}
+        dhcp4: {{ interface.dhcp | default('no') }}
+        mtu: {{ interface.mtu | default(mtu) }}
+        routes: {{ hosts[host].routes[interface.name] | default([]) }}
+    {% endfor %}
+    bonds:
+    {% for bond in bonds %}
+      {{ bond.name }}:
+        interfaces: {{ bond.members }}
+        parameters:
+          mode: 802.3ad
+          lacp-rate: fast
+          mii-monitor-interval: 100
+    {% endfor %}
+    vlans:
+    {% for vlan in vlans %}
+      vlan{{ vlan.id }}:
+        addresses: {{ hosts[host].addresses[vlan.name] | default([]) }}
+        accept-ra: no
+        id: {{ vlan.id }}
+        link: {{ vlan.link }}
+        mtu: {{ vlan.mtu | default(mtu) }}
+    {% endfor %}
+    bridges:
+    {% for bridge in bridges %}
+      {{ bridge.name }}:
+        interfaces: [ {{ bridge.interface | default() }} ]
+        addresses: {{ hosts[host].addresses[bridge.name] | default([]) }}
+        mtu: {{ bridge.mtu | default(mtu) }}
+        routes: {{ hosts[host].routes[bridge.name] | default([]) }}
+        nameservers:
+          addresses: {{ nameservers | default ([]) }}
+    {% endfor %}
+  {% endfor %}

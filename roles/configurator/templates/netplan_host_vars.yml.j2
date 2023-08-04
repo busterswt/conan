@@ -1,0 +1,44 @@
+#jinja2: lstrip_blocks: "True"
+---
+ansible_host: {{ hostvars[host].addresses[ansible_host_interface][0] | ansible.utils.ipaddr('address') }}
+ansible_ssh_private_key_file: {{ ansible_ssh_private_key_file }}
+netplan_configuration:
+  network:
+    version: 2
+    renderer: networkd
+    ethernets:
+    {% for interface in interfaces %}
+      {{ interface.name }}:
+        addresses: {{ hostvars[host].addresses[interface.name] | default([]) }}
+        dhcp4: {{ interface.dhcp | default('no') }}
+        mtu: {{ interface.mtu | default(mtu) }}
+        routes: {{ hostvars[host].routes[interface.name] | default([]) }}
+    {% endfor %}
+    bonds:
+    {% for bond in bonds %}
+      {{ bond.name }}:
+        interfaces: {{ bond.members }}
+        parameters:
+          mode: 802.3ad
+          lacp-rate: fast
+          mii-monitor-interval: 100
+    {% endfor %}
+    vlans:
+    {% for vlan in vlans %}
+      vlan{{ vlan.id }}:
+        addresses: {{ hostvars[host].addresses[vlan.name] | default([]) }}
+        accept-ra: no
+        id: {{ vlan.id }}
+        link: {{ vlan.link }}
+        mtu: {{ vlan.mtu | default(mtu) }}
+    {% endfor %}
+    bridges:
+    {% for bridge in bridges %}
+      br-{{ bridge.name }}:
+        interfaces: [ {{ bridge.interface | default() }} ]
+        addresses: {{ hostvars[host].addresses[bridge.name] | default([]) }}
+        mtu: {{ bridge.mtu | default(mtu) }}
+        routes: {{ hostvars[host].routes[bridge.name] | default([]) }}
+        nameservers:
+          addresses: {{ nameservers | default ([]) }}
+    {% endfor %}

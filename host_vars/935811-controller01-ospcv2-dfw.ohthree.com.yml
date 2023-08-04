@@ -1,0 +1,115 @@
+---
+ansible_host: 192.168.192.16
+ansible_ssh_private_key_file: /home/ubuntu/.ssh/ngpc_ospc
+netplan_configuration:
+  network:
+    version: 2
+    renderer: networkd
+    ethernets:
+      eno1:
+        addresses: []
+        dhcp4: no
+        mtu: 1500
+        routes: []
+      eno2:
+        addresses: ['192.168.192.16/25']
+        dhcp4: no
+        mtu: 1500
+        routes: [{'to': '192.168.192.192/26', 'via': '192.168.193.1'}]
+      eno3:
+        addresses: []
+        dhcp4: no
+        mtu: 1500
+        routes: []
+      eno4:
+        addresses: []
+        dhcp4: no
+        mtu: 1500
+        routes: []
+      eno49:
+        addresses: []
+        dhcp4: no
+        mtu: 9000
+        routes: []
+      eno50:
+        addresses: []
+        dhcp4: no
+        mtu: 9000
+        routes: []
+      ens5f0:
+        addresses: []
+        dhcp4: no
+        mtu: 9000
+        routes: []
+      ens5f1:
+        addresses: []
+        dhcp4: no
+        mtu: 9000
+        routes: []
+    bonds:
+      bond0:
+        interfaces: ['eno49', 'ens5f0']
+        parameters:
+          mode: 802.3ad
+          lacp-rate: fast
+          mii-monitor-interval: 100
+      bond1:
+        interfaces: ['eno50', 'ens5f1']
+        parameters:
+          mode: 802.3ad
+          lacp-rate: fast
+          mii-monitor-interval: 100
+    vlans:
+      vlan233:
+        addresses: []
+        accept-ra: no
+        id: 233
+        link: bond0
+        mtu: 1500
+      vlan234:
+        addresses: []
+        accept-ra: no
+        id: 234
+        link: bond0
+        mtu: 1500
+      vlan355:
+        addresses: []
+        accept-ra: no
+        id: 355
+        link: bond1
+        mtu: 9000
+      vlan354:
+        addresses: []
+        accept-ra: no
+        id: 354
+        link: bond0
+        mtu: 9000
+    bridges:
+      br-host:
+        interfaces: [ vlan233 ]
+        addresses: ['172.28.1.1/24']
+        mtu: 1500
+        routes: []
+        nameservers:
+          addresses: ['173.203.4.8', '173.203.4.9']
+      br-mgmt:
+        interfaces: [ vlan234 ]
+        addresses: ['172.28.2.1/24']
+        mtu: 1500
+        routes: []
+        nameservers:
+          addresses: ['173.203.4.8', '173.203.4.9']
+      br-overlay:
+        interfaces: [ vlan355 ]
+        addresses: ['172.28.3.1/24']
+        mtu: 1500
+        routes: []
+        nameservers:
+          addresses: ['173.203.4.8', '173.203.4.9']
+      br-storage:
+        interfaces: [ vlan354 ]
+        addresses: []
+        mtu: 1500
+        routes: []
+        nameservers:
+          addresses: ['173.203.4.8', '173.203.4.9']

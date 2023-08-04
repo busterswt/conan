@@ -1,0 +1,34 @@
+---
+- hosts: localhost
+  gather_facts: no
+  any_errors_fatal: true
+  tasks:
+    - name: Generate inventory and host_vars
+      ansible.builtin.include_role:
+        name: configurator
+
+
+- hosts: all
+  gather_facts: no
+  any_errors_fatal: false
+  tasks:
+    - name: Run the netplan!
+      ansible.builtin.include_role:
+        name: ansible-netplan
+      vars:
+        - netplan_enabled: "{{ netplan_enabled }}"
+          netplan_config_file: "{{ netplan_config_file }}"
+          become: yes
+
+
+#  roles:
+#    - role: ansible-netplan
+#      become: yes
+      # This role will do nothing unless netplan_enabled is true.
+#      netplan_enabled: "{{ netplan_enabled }}"
+      # This should point to an existing netplan configuration file 
+      # on your system which this role will overwrite, 
+      # or to a nonexistent file which netplan is aware of.
+      #
+      # The default is /etc/netplan/config.yaml.
+#      netplan_config_file: "{{ netplan_config_file }}"

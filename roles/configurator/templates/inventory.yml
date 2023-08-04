@@ -1,0 +1,6 @@
+{{ hosts }}
+{% for host in hosts %}
+  {{ hosts[host].addresses }}
+{% endfor %}
+
+{{ interfaces }}

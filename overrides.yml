@@ -1,0 +1,71 @@
+---
+# netplan-ansible role defaults
+netplan_config_file: /etc/netplan/my-awesome-netplan.yaml
+netplan_enabled: true
+
+# Specify the interface used for ansible_host. IP should be auto-detected based on simple inventory.
+ansible_host_interface: eno2
+ansible_ssh_private_key_file: /home/ubuntu/.ssh/ngpc_ospc
+
+# Specify global settings
+mtu: 1500
+nameservers:
+  - 173.203.4.8
+  - 173.203.4.9
+
+############
+
+# Define homogenous interfaces used across the deployment
+interfaces:
+  - name: eno1
+  - name: eno2
+  - name: eno3
+  - name: eno4
+  - name: eno49
+    mtu: 9000
+  - name: eno50
+    mtu: 9000
+  - name: ens5f0
+    mtu: 9000
+  - name: ens5f1
+    mtu: 9000
+bonds:
+  - name: bond0
+    members:
+    - eno49
+    - ens5f0
+  - name: bond1
+    members:
+    - eno50
+    - ens5f1
+vlans:
+  - name: vlan233
+    desc: host
+    id: 233
+    link: bond0
+  - name: vlan234
+    desc: mgmt
+    id: 234
+    link: bond0
+  - name: vlan355
+    desc: overlay
+    id: 355
+    link: bond1
+    mtu: 9000
+  - name: 354
+    desc: storage
+    id: 354
+    link: bond0
+    mtu: 9000
+
+# Bridge names will be prefaced with "br-", so use the short name here
+# ie. 'host' will be implemented as 'br-host'
+bridges:
+  - name: host
+    interface: vlan233
+  - name: mgmt
+    interface: vlan234
+  - name: overlay
+    interface: vlan355
+  - name: storage
+    interface: vlan354
