@@ -61,6 +61,14 @@ those network values can be defined in the `overrides.yml` file. Any
 *host specific* changes can be implemented in the respective host_vars
 file.
 
+## usage
+
+To apply network configurations to hosts in the inventory, run the following:
+
+```
+ansible-playbook -i simple_inventory site.yml -e @overrides.yml
+```
+
 ## todo (notes to myself)
 
 - Remove existing netplan configuration file(s) before performing `netplan apply`
