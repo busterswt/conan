@@ -5,7 +5,15 @@ netplan_enabled: true
 
 # Specify the interface used for ansible_host. IP should be auto-detected based on simple inventory.
 ansible_host_interface: eno2
+
+# Specify path to local key file
 ansible_ssh_private_key_file: /home/ubuntu/.ssh/ngpc_ospc
+
+# Remove existing netplan config (default is false, verify it works before setting to true!)
+netplan_remove_existing: true
+
+# Disable strict checking (for PoC only)
+ansible_ssh_common_args: "-o StrictHostKeyChecking=no"
 
 # Specify global settings
 mtu: 1500
