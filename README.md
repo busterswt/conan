@@ -11,8 +11,10 @@ with bifrost.
 The installation process consists of cloning the 'netplanner' repo and
 bringing in a dependency repo: ansible-netplan.
 
+```
 git clone https://github.com/busterswt/netplanner/ ~/netplanner
 git clone https://github.com/mrlesmithjr/ansible-netplan ~/netplanner/roles/ansible-netplan
+```
 
 ## todo (notes to myself)
 
