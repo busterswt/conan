@@ -21,6 +21,12 @@ nameservers:
   - 173.203.4.8
   - 173.203.4.9
 
+# Create a local user (PoC Only!)
+create_local_user: true
+enable_password_auth: true
+local_user: conan
+local_password: $6$9TiEdaZQPCeDgiiL$Vyig.UUf.vBVHK2z.HaPRd0b3N8QeG5qRBvondPr9nCvuDkxyQ.8XDG/8DQjDDm8MaCuZNhQc4oNoDcmDDj7P1
+
 ############
 
 # Define homogenous interfaces used across the deployment
