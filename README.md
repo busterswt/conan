@@ -1,5 +1,6 @@
-{:.center}
 ![Conan The Deployer](docs/images/conan.png)
+
+![Conan The Deployer](docs/images/conan.gif)
 
 Proof of concept playbooks and roles to take a simple inventory and generate
 a larger inventory that can be leveraged by the ansible-netplan role.
