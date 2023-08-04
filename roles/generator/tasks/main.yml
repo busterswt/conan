@@ -14,6 +14,28 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Create local users (optional)
-- import_tasks: users.yml
-  when: create_local_user
+- name: Create host_vars directory
+  ansible.builtin.file:
+    path: "{{ playbook_dir }}/host_vars"
+    state: directory
+    mode: '0755'
+
+- name: set_fact
+  set_fact:
+    hosts: "{{ groups['all'] }}"
+
+- name: DEBUG - print the hostvars
+  debug:
+    msg: "{{ hostvars[host] }}"
+  loop: "{{ hosts }}"
+  loop_control:
+    loop_var: host
+
+- name: Generate individual host_vars files
+  template:
+    src: "templates/netplan_host_vars.yml.j2"
+    dest: "{{ playbook_dir }}/host_vars/{{ host }}.yml"
+    mode: "0644"
+  loop: "{{ hosts }}"
+  loop_control:
+    loop_var: host
