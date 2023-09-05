@@ -1,0 +1,83 @@
+- name: Create images directory
+  ansible.builtin.file:
+    path: "{{ playbook_dir }}/images/"
+    state: directory
+    mode: '0755'
+
+- name: print images
+  debug:
+    msg: "{{ images }}"
+
+- name: print items
+  debug:
+    msg: "{{ item }}"
+  with_items: "{{ images }}"
+
+- name: Check for existence of local images
+  ansible.builtin.stat:
+    path: "{{ playbook_dir }}/images/{{ images[item].filename }}"
+  register: file_stat_var
+  with_items: "{{ images }}"
+#  loop_var: vm_image
+
+- name: Get sha256sum from checksum file
+  shell: "curl --silent {{ images[item].sha256file }} | grep {{ images[item].filename }} | awk '{print $1}'"
+  register: sha256sum_image
+  with_items: "{{ images }}"
+  when:
+    - images['item'].sha256file is defined
+
+#    - name: Create list of override image UUIDs
+#      set_fact:
+#        _image_list: "{{ _image_list | default([]) + [item.value.image_uuid] }}"
+#      loop: "{{ mnaio_deployment | dict2items }}"
+
+#    - name: Cull the image list
+#      set_fact:
+#        image_list: "{{ _image_list | select() }}"
+
+- name: Download image to local directory, if doesn't exist
+#  become: true
+  ansible.builtin.get_url:
+    url: "{{ images[item.item].url }}"
+    dest: "{{ playbook_dir }}/images/"
+#    checksum: "sha256:{{ sha256sum_image.stdout }}"
+    mode: '0440'
+  with_items: "{{ file_stat_var.results }}"
+  when:
+#    - (image_list|length) < (mnaio_deployment|length)
+    - not item.stat.exists
+
+- name: debug
+  debug:
+    msg: "{{ item }}"
+  with_items:
+  - "{{ ospcv2_clouds }}"
+
+- name: debug
+  debug:
+    msg: "{{ item }}"
+  with_items:
+  - "{{ images }}"
+
+- name: debug
+  debug:
+    msg: "{{ item.0 }} and {{ item.1 }}"
+  with_nested:
+    - "{{ ospcv2_clouds }}"
+    - "{{ images }}"
+
+- name: Upload images to the Cloud!
+  openstack.cloud.image:
+    cloud: "{{ item.0 }}"
+    name: "{{ images[item.1].name }}"
+    container_format: "{{ images[item.1].container_format }}"
+    disk_format: "{{ images[item.1].disk_format }}"
+    state: present
+    filename: "{{ playbook_dir }}/images/{{ images[item.1].filename }}"
+    properties:
+      cpu_arch: x86_64
+  with_nested:
+    - "{{ ospcv2_clouds }}"
+    - "{{ images }}"
+

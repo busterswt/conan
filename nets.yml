@@ -1,0 +1,9 @@
+---
+- hosts: localhost
+  gather_facts: no
+  any_errors_fatal: true
+  tasks:
+
+    - name: create nets
+      ansible.builtin.include_role:
+        name: networker

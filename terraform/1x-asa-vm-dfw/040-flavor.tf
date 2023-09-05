@@ -1,0 +1,39 @@
+#### Flavors ####
+
+# ORD
+
+resource "openstack_compute_flavor_v2" "t2-small-ord" {
+  provider    = openstack.ord1
+  name  = "t2.small"
+  ram   = "2048"
+  vcpus = "1"
+  disk  = "20"
+  is_public = true
+}
+
+resource "openstack_compute_flavor_v2" "t2-medium-ord" {
+  provider    = openstack.ord1
+  name  = "t2.medium"
+  ram   = "4096"
+  vcpus = "2"
+  disk  = "20"
+  is_public = true
+}
+
+resource "openstack_compute_flavor_v2" "t2-large-ord" {
+  provider    = openstack.ord1
+  name  = "t2.large"
+  ram   = "8192"
+  vcpus = "2"
+  disk  = "20"
+  is_public = true
+}
+
+resource "openstack_compute_flavor_v2" "t2-xlarge-ord" {
+  provider    = openstack.ord1
+  name  = "t2.xlarge"
+  ram   = "16384"
+  vcpus = "4"
+  disk  = "20"
+  is_public = true
+}

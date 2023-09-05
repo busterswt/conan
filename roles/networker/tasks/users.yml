@@ -1,0 +1,28 @@
+# Tasks for configuring local users (PoC Only)
+---
+- name: Add local user and add to 'admin' group
+  ansible.builtin.user:
+    name: "{{ local_user }}"
+    password: "{{ local_password }}"
+    shell: /bin/bash
+    groups: admin
+    append: yes
+  become: yes
+
+- name: Disallow SSH password authentication
+  ansible.builtin.lineinfile:
+      dest: /etc/ssh/sshd_config
+      regexp: "^PasswordAuthentication"
+      line: "PasswordAuthentication yes"
+      state: present
+  notify:
+    - restart sshd
+  become: yes
+  when: enable_password_auth
+
+#- handlers:
+#  - name: restart sshd
+#    ansible.builtin.service:
+#      name: sshd
+#      state: restarted
+#    become: yes

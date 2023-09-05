@@ -1,4 +1,8 @@
 ---
+ospcv2_clouds:
+  - ord1
+  - dfw3
+
 # netplan-ansible role defaults
 netplan_config_file: /etc/netplan/my-awesome-netplan.yaml
 netplan_enabled: true
@@ -83,3 +87,60 @@ bridges:
     interface: vlan355
   - name: storage
     interface: vlan354
+
+images:
+  cisco-asav:
+    name: cisco-asav-9-18-35-55-image
+    filename: asav9-18-3-55.qcow2
+    container_format: bare
+    disk_format: qcow2
+    url: https://48e3b4da1b1824ee4ef3-445efc64e2b805a9dc04f8de721e8b65.ssl.cf1.rackcdn.com/asav9-18-3-55.qcow2
+#  pa-vm-10-2-4.qcow2:
+  pa-vm-11-0-2:
+    name: PA-VM-KVM-11.0.2-image
+    filename: PA-VM-KVM-11.0.2.qcow2
+    container_format: bare
+    disk_format: qcow2
+    url: https://48e3b4da1b1824ee4ef3-445efc64e2b805a9dc04f8de721e8b65.ssl.cf1.rackcdn.com/PA-VM-KVM-11.0.2.qcow2
+  jammy:
+    name: ospcv2-ubuntu-22.04-jammy-cloud-image
+    filename: jammy-server-cloudimg-amd64.img
+    container_format: bare
+    disk_format: qcow2
+    url: https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-amd64.img
+    sha256file: https://cloud-images.ubuntu.com/jammy/current/SHA256SUMS
+  focal:
+    name: ospcv2-ubuntu-20.04-focal-cloud-image
+    filename: focal-server-cloudimg-amd64.img
+    container_format: bare
+    disk_format: qcow2
+    url: https://cloud-images.ubuntu.com/focal/current/focal-server-cloudimg-amd64.img
+    sha256file: https://cloud-images.ubuntu.com/focal/current/SHA256SUMS
+  debian-10:
+    name: ospcv2-debian-10-buster-cloud-image
+    filename: debian-10-openstack-amd64.qcow2
+    container_format: bare
+    disk_format: qcow2
+    url: https://cloud.debian.org/images/cloud/OpenStack/current-10/debian-10-openstack-amd64.qcow2
+    sha256file: https://cloud.debian.org/images/cloud/OpenStack/current-10/SHA256SUMS
+  alma-9:
+    name: ospcv2-alma-linux-9-cloud-image
+    filename: AlmaLinux-9-GenericCloud-latest.x86_64.qcow2
+    container_format: bare
+    disk_format: qcow2
+    url: https://repo.almalinux.org/almalinux/9/cloud/x86_64/images/AlmaLinux-9-GenericCloud-latest.x86_64.qcow2
+    sha256file: https://repo.almalinux.org/almalinux/9/cloud/x86_64/images/CHECKSUM
+  rocky-8:
+    name: ospcv2-rocky-linux-8-cloud-image
+    filename: Rocky-8-GenericCloud.latest.x86_64.qcow2
+    container_format: bare
+    disk_format: qcow2
+    url: https://download.rockylinux.org/pub/rocky/8/images/x86_64/Rocky-8-GenericCloud.latest.x86_64.qcow2
+    sha256file: https://download.rockylinux.org/pub/rocky/8/images/x86_64/Rocky-8-GenericCloud.latest.x86_64.qcow2.CHECKSUM
+  rocky-9:
+    name: ospcv2-rocky-linux-9-cloud-image
+    filename: Rocky-9-GenericCloud.latest.x86_64.qcow2
+    container_format: bare
+    disk_format: qcow2
+    url: https://download.rockylinux.org/pub/rocky/9/images/x86_64/Rocky-9-GenericCloud.latest.x86_64.qcow2
+    sha256file: https://download.rockylinux.org/pub/rocky/9/images/x86_64/Rocky-9-GenericCloud.latest.x86_64.qcow2.CHECKSUM

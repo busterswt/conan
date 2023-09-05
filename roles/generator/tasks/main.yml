@@ -24,12 +24,12 @@
   set_fact:
     hosts: "{{ groups['all'] }}"
 
-- name: DEBUG - print the hostvars
-  debug:
-    msg: "{{ hostvars[host] }}"
-  loop: "{{ hosts }}"
-  loop_control:
-    loop_var: host
+#- name: DEBUG - print the hostvars
+#  debug:
+#    msg: "{{ hostvars[host] }}"
+#  loop: "{{ hosts }}"
+#  loop_control:
+#    loop_var: host
 
 - name: Generate individual host_vars files
   template:

@@ -1,2 +1,3 @@
 host_vars/
 roles/ansible-netplan/
+images/
